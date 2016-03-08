@@ -22,6 +22,7 @@ Cette application doit permettre de pouvoir déposer des commentaires sur un pro
 
 ### Les pré-requis
 
+* Vous ne devriez pas passer plus de 4h sur le projet, temps d'installation compris
 * Vous êtes libres d'utiliser un Framework, un système de template, un système de stockage ou d'authentification particulier, ...
 * Vous devez vous servir de l'API de GitHub pour récupérer les utilisateurs:
  https://developer.github.com/v3/search/#search-users . 
@@ -35,6 +36,7 @@ https://api.github.com/search/users
 
 * On changera le choix du dépôt par un multiselect afin de lister directement dans le formulaire les dépôts de l'utilisateur. 
 * Utilisation d'un frameworkJS pour afficher les résultats
+* Utilisation d'outil d'automatisation (webpack, gulp, grunt, ...)
 * Toutes les fonctionnalités que vous aurez le temps d'ajouter seront aussi bonnes à prendre. Un bonus autour de votre créativité pourra être considéré.
 
 ### Délivrabilité
