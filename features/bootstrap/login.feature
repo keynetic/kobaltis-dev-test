@@ -6,9 +6,7 @@ Feature: Log in
 
   Scenario: Successful log in
     Given I am on "/login"
-    When I fill in "_username" with "testuser"
-    And I fill in "_password" with "boboleyo66"
-    And I press "_submit"
+    When I am authenticated as "testuser" using "boboleyo66"
     Then I should be on the homepage
 
   Scenario: Unsuccessful log in
@@ -17,3 +15,4 @@ Feature: Log in
     And I fill in "_password" with "error"
     And I press "_submit"
     Then I should be on "/login"
+
