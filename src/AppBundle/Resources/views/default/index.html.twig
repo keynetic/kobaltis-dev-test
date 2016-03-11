@@ -1,0 +1,31 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Search on Github{% endblock %}
+
+{% block body %}
+
+    <form action="{{ path('homepage') }}">
+
+        <input type="text"
+               placeholder="Username"
+               name="q"
+               id="q">
+
+        <input type="submit" id="_submit" name="_submit" class="submit" value="Search on Github" />
+    </form>
+
+    {% if results is defined %}
+        <h2>Results</h2>
+        <ul>
+            {% for user in results.users %}
+                <li>
+                    {{ user.username }}
+                </li>
+            {% endfor %}
+        </ul>
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <div class="flash-notice">{{ flashMessage }}</div>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}
