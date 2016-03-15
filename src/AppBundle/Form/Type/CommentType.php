@@ -15,7 +15,7 @@ class CommentType extends AbstractType
 		$builder
 			->add('githubUser', GithubUserType::class)
 			->add('body', TextareaType::class)
-			->add('save', SubmitType::class, array( 'label' => 'Create comment' ) )
+			->add('save', SubmitType::class)
 		;
 	}
 

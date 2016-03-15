@@ -9,9 +9,19 @@
     <title>{% block title %}Search and Comment On Github{% endblock %}</title>
 
     {% block stylesheets %}
+        {% stylesheets
+        filter='cssrewrite'
+        'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'
+        'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
+        'http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic'
+        'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css'
+        'bundles/app/css/*'
+        %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet"/>
+        {% endstylesheets %}
     {% endblock %}
 
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 </head>
 <body id="page-top">
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
@@ -22,19 +32,18 @@
                     data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
             </button>
-            <a class="navbar-brand page-scroll" href="#page-top">Keynetic</a>
+            <a class="navbar-brand page-scroll" href="/">Kobaltis</a>
         </div>
-
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <li>
                     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                     <a href="{{ path('fos_user_profile_edit') }}">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}
-                    </a> |
+                    </a>
                 </li>
                 <li>
-                    <a href="{{ path('comment') }}">Commentaires
+                    <a href="{{ path('comment') }}">Comments
                     </a>
                 </li>
                 <li>
@@ -55,6 +64,20 @@
     {% block fos_user_content %}
     {% endblock fos_user_content %}
 {% endblock %}
-{% block javascripts %}{% endblock %}
+{% block javascripts %}
+    {% javascripts
+    'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'
+    'bundles/app/js/cbpAnimatedHeader.js'
+    'bundles/app/js/classie.js'
+    'bundles/app/js/jquery.easing.min.js'
+    'bundles/app/js/jquery.fittext.js'
+    'bundles/app/js/jquery.js'
+    'bundles/app/js/wow.min.js'
+    'bundles/app/js/creative.js'
+    %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+
+{% endblock %}
 </body>
 </html>

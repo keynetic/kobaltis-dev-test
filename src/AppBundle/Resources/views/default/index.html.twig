@@ -8,7 +8,7 @@
                 <div class="header-content-inner">
                     <h1>Search on Github</h1>
                     <hr>
-                    <p>Trouvez des profils Github et commentez !</p>
+                    <p>Find Github's profiles and comment !</p>
                     <form action="{{ path('homepage') }}">
 
                         <input type="text"
@@ -28,36 +28,38 @@
         </header>
 
         {% if githubUsers is defined and githubUsers is not empty %}
-            <h2>Results</h2>
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    {% for flashMessage in app.session.flashbag.get('notice') %}
-                        <div class="flash-notice">{{ flashMessage }}</div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            {% for githubUser in githubUsers %}
+            <div class="results">
+                <h2>Results</h2>
                 <div class="row">
-                    <section class="col-xs-12 col-sm-6 col-md-12">
-                        <article class="search-result row">
-                            <div class="col-xs-12 col-sm-12 col-md-2">
-                                <a href="{{ githubUser.html_url }}" title="{{ githubUser.html_url }} avatar"
-                                   class="thumbnail"><img src="{{ githubUser.avatar_url }}"
-                                                          alt="{{ githubUser.html_url }} avatar"/></a>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                                <h3><a href="{{ githubUser.html_url }}" title="">{{ githubUser.name }}</a></h3>
-                                <p>{{ githubUser.bio }}</p>
-                            </div>
-                            <span class="clearfix borda"></span>
-                        </article>
-                        {% if app.user %}
-                            {% include 'AppBundle:Form:commentForm.html.twig' %}
-                        {% endif %}
-                    </section>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        {% for flashMessage in app.session.flashbag.get('notice') %}
+                            <div class="flash-notice">{{ flashMessage }}</div>
+                        {% endfor %}
+                    </div>
                 </div>
-            {% endfor %}
 
+                {% for githubUser in githubUsers %}
+                    <div class="row">
+                        <section class="col-xs-12 col-sm-6 col-md-12">
+                            <article class="search-result row">
+                                <div class="col-xs-12 col-sm-12 col-md-2">
+                                    <a href="{{ githubUser.html_url }}" title="{{ githubUser.html_url }} avatar"
+                                       class="thumbnail"><img src="{{ githubUser.avatar_url }}"
+                                                              alt="{{ githubUser.html_url }} avatar"/></a>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                                    <h3><a href="{{ githubUser.html_url }}" title="">{{ githubUser.name }}</a></h3>
+                                    <p>{{ githubUser.bio }}</p>
+                                </div>
+                                <span class="clearfix borda"></span>
+                            </article>
+                            {% if app.user %}
+                                {% include 'AppBundle:Form:commentForm.html.twig' %}
+                            {% endif %}
+                        </section>
+                    </div>
+                {% endfor %}
+            </div>
         {% endif %}
+
     {% endblock %}
