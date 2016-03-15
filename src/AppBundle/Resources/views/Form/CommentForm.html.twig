@@ -2,18 +2,22 @@
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 notif"></div>
-    {% for flashMessage in app.session.flashbag.get('notice') %}
-        <div class="flash-notice">{{ flashMessage }}</div>
-    {% endfor %}
+{% for flashMessage in app.session.flashbag.get('notice') %}
+    <div class="flash-notice">{{ flashMessage }}</div>
+{% endfor %}
 </div>
 <form class="form-horizontal" id="form-contact"
       action="{{ path(app.request.attributes.get('_route'),{'q': 'rob'}) }}"
       method="post">
     {{ form_start(form) }}
     {{ form_errors(form) }}
-        <fieldset>
-            {{ form_widget(form.githubUser.id,{ 'attr': {'value': githubUser.id } }) }}
-        </fieldset>
+    <fieldset>
+        {{ form_widget(form.githubUser.id,{ 'attr': {'value': githubUser.id } }) }}
+        {{ form_widget(form.githubUser.name,{ 'attr': {'value': githubUser.name } }) }}
+        {{ form_widget(form.githubUser.bio,{ 'attr': {'value': githubUser.bio } }) }}
+        {{ form_widget(form.githubUser.html_url,{ 'attr': {'value': githubUser.html_url } }) }}
+        {{ form_widget(form.githubUser.avatar_url,{ 'attr': {'value': githubUser.avatar_url } }) }}
+    </fieldset>
     <div class="col-md-2 col-xs-12">
         <fieldset>
             {{ form_errors(form.body) }}
@@ -25,15 +29,15 @@
     </div>
 
     {% if githubUser.comments is not empty %}
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <h3>Commentaires</h3>
-        <ul>
-            {% for comment in githubUser.comments %}
-                <i>{{ comment.date|date("m/d/Y") }}</i><br/>
-                <p>{{ comment.body }}</p>
-            {% endfor %}
-        </ul>
-    </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h3>Commentaires</h3>
+            <ul>
+                {% for comment in githubUser.comments %}
+                    <i>{{ comment.date|date("m/d/Y") }}</i><br/>
+                    <p>{{ comment.body }}</p>
+                {% endfor %}
+            </ul>
+        </div>
     {% endif %}
     {{ form_end(form) }}
 </form>

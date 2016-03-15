@@ -27,46 +27,46 @@ class DefaultController extends Controller {
 	 */
 	public function indexAction( Request $request ) {
 
-		$params      = array();
-		$query       = $request->get( 'q' );
-		$user        = $this->getUser();
-		$githubUsers = array();
+		$params       = array();
+		$query        = $request->get( 'q' );
+		$user         = $this->getUser();
+		$flashmessage = '';
+		$granted      = false;
 
 		if ( $query ) {
-			$client          = new Client();
+
+			$client = new Client();
+
+			try {
+				$client->authenticate( $this->container->getParameter( 'github' ), \Github\Client::AUTH_URL_TOKEN );
+			} catch ( \Exception $e ) {
+				error_log( $e->getMessage() );
+			}
+
 			$githubApiResult = $client->api( 'users' )->find( $query );
 			$githubUsers     = $githubApiResult['users'];
-			$flashmessage    = '';
 
 			if ( empty( $githubUsers ) ) {
+
 				$flashmessage = 'No results for ' . $query;
+
+			} else if ( $this->isGranted( 'IS_AUTHENTICATED_REMEMBERED' ) ) {
+
+				if ( ! is_object( $user ) || ! $user instanceof UserInterface ) {
+					throw new AccessDeniedException( 'This user does not have access to this section.' );
+				} else {
+					$granted = true;
+					$em      = $this->getDoctrine()->getManager();
+					$repo    = $em->getRepository( 'AppBundle:GithubUser' );
+				}
 			}
 
 			$flashBag = $this->get( 'session' )->getFlashBag();
 			$flashBag->get( 'notice' );
 			$flashBag->set( 'notice', $flashmessage );
-		}
 
-		if ( $this->isGranted( 'IS_AUTHENTICATED_REMEMBERED' ) and ! empty( $githubUsers ) ) {
-
-			if ( ! is_object( $user ) || ! $user instanceof UserInterface ) {
-				throw new AccessDeniedException( 'This user does not have access to this section.' );
-			} else {
-
-				$em   = $this->getDoctrine()->getManager();
-				$repo = $em->getRepository( 'AppBundle:GithubUser' );
-
-				foreach ( $githubUsers as $key => $githubUser ) {
-
-					$comment                = new Comment();
-					$form                   = $this->createForm( CommentType::class, $comment );
-					$githubUser['form']     = $form->createView();
-					$githubUser['comments'] = $repo->getCommentsforUser( $githubUser['id'], $user );
-					$githubUsers[ $key ]    = $githubUser;
-
-				}
-
-			}
+			$comment                = new Comment();
+			$form                   = $this->createForm( CommentType::class, $comment );
 
 			$form->handleRequest( $request );
 
@@ -92,9 +92,19 @@ class DefaultController extends Controller {
 
 			}
 
-		}
+			foreach ( $githubUsers as $key => $githubUser ) {
+				$githubUser = $client->api( 'user' )->show( $githubUser['username'] );
+				if ( $granted ) {
 
-		$params['githubUsers'] = $githubUsers;
+					$githubUser['form']     = $form->createView();
+					$githubUser['comments'] = $repo->getCommentsforUser( $githubUser['id'], $user );
+				}
+				$githubUsers[ $key ] = $githubUser;
+			}
+
+			$params['query']       = $query;
+			$params['githubUsers'] = $githubUsers;
+		}
 
 		return $params;
 	}
