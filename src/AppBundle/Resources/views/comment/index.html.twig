@@ -1,0 +1,41 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}Comments{% endblock %}
+
+    {% block content %}
+
+        {% if comments is defined and comments is not empty %}
+            <h2>Comments</h2>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    {% for flashMessage in app.session.flashbag.get('notice') %}
+                        <div class="flash-notice">{{ flashMessage }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% for comment in comments %}
+                {{ comment.githubUser.name }}
+                <div class="row">
+                    <section class="col-xs-12 col-sm-6 col-md-12">
+                        <article class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-2">
+                                <a href="{{ comment.githubUser.htmlUrl }}" title="{{ comment.githubUser.htmlUrl }} avatar"
+                                   class="thumbnail"><img src="{{ comment.githubUser.avatarUrl }}"
+                                                          alt="{{ comment.githubUser.htmlUrl }} avatar"/></a>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                                <h3><a href="{{ comment.githubUser.htmlUrl }}" title="">{{ comment.githubUser.name }}</a></h3>
+                                <p>{{ comment.githubUser.bio }}</p>
+                                <h3>Comment</h3>
+                                <i>{{ comment.date|date("m/d/Y") }}</i><br/>
+                                <p>{{ comment.body }}</p>
+                            </div>
+                            <span class="clearfix borda"></span>
+                        </article>
+                    </section>
+                </div>
+            {% endfor %}
+
+        {% endif %}
+    {% endblock %}

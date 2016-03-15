@@ -21,6 +21,30 @@ class GithubUser
     private $id;
 
     /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $name;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $bio;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $html_url;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $avatar_url;
+
+    /**
      * @var ArrayCollection $comments The comments
      * @ORM\OneToMany(targetEntity="Comment",mappedBy="githubUser", cascade={"persist", "remove"}, orphanRemoval=true)
      */
@@ -118,5 +142,74 @@ class GithubUser
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set bio
+     *
+     * @param string $bio
+     * @return GithubUser
+     */
+    public function setBio($bio)
+    {
+        $this->bio = $bio;
+
+        return $this;
+    }
+
+    /**
+     * Get bio
+     *
+     * @return string 
+     */
+    public function getBio()
+    {
+        return $this->bio;
+    }
+
+    /**
+     * Set html_url
+     *
+     * @param string $htmlUrl
+     * @return GithubUser
+     */
+    public function setHtmlUrl($htmlUrl)
+    {
+        $this->html_url = $htmlUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get html_url
+     *
+     * @return string 
+     */
+    public function getHtmlUrl()
+    {
+        return $this->html_url;
+    }
+
+    /**
+     * Set avatar_url
+     *
+     * @param string $avatarUrl
+     * @return GithubUser
+     */
+    public function setAvatarUrl($avatarUrl)
+    {
+        $this->avatar_url = $avatarUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get avatar_url
+     *
+     * @return string 
+     */
+    public function getAvatarUrl()
+    {
+        return $this->avatar_url;
     }
 }

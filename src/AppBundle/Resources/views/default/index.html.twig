@@ -1,38 +1,63 @@
-{% extends "::base.html.twig" %}
+{% extends "AppBundle::layout.html.twig" %}
 
 {% block title %}Search on Github{% endblock %}
 
-{% block body %}
+    {% block content %}
+        <header>
+            <div class="header-content">
+                <div class="header-content-inner">
+                    <h1>Search on Github</h1>
+                    <hr>
+                    <p>Trouvez des profils Github et commentez !</p>
+                    <form action="{{ path('homepage') }}">
 
-    <form action="{{ path('homepage') }}">
+                        <input type="text"
+                               id="q"
+                               name="q"
+                               placeholder="Username"
+                               class="search">
 
-        <input type="text"
-               placeholder="Username"
-               name="q"
-               id="q">
+                        <input type="submit"
+                               id="_submit"
+                               name="_submit"
+                               value="Search on Github"
+                               class="submit btn btn-primary btn-xl"/>
+                    </form>
+                </div>
+            </div>
+        </header>
 
-        <input type="submit" id="_submit" name="_submit" class="submit" value="Search on Github"/>
-    </form>
+        {% if githubUsers is defined and githubUsers is not empty %}
+            <h2>Results</h2>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    {% for flashMessage in app.session.flashbag.get('notice') %}
+                        <div class="flash-notice">{{ flashMessage }}</div>
+                    {% endfor %}
+                </div>
+            </div>
 
-    {% if githubUsers is not empty %}
-        <h2>Results</h2>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {% for flashMessage in app.session.flashbag.get('notice') %}
-
-                <div class="flash-notice">{{ flashMessage }}</div>
-            {% endfor %}
-        </div>
-        <ul>
             {% for githubUser in githubUsers %}
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{{ githubUser.fullname }}</div>
-                    {% if app.user %}
-                        {% include 'AppBundle:Form:commentForm.html.twig' %}
-                    {% endif %}
+                    <section class="col-xs-12 col-sm-6 col-md-12">
+                        <article class="search-result row">
+                            <div class="col-xs-12 col-sm-12 col-md-2">
+                                <a href="{{ githubUser.html_url }}" title="{{ githubUser.html_url }} avatar"
+                                   class="thumbnail"><img src="{{ githubUser.avatar_url }}"
+                                                          alt="{{ githubUser.html_url }} avatar"/></a>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                                <h3><a href="{{ githubUser.html_url }}" title="">{{ githubUser.name }}</a></h3>
+                                <p>{{ githubUser.bio }}</p>
+                            </div>
+                            <span class="clearfix borda"></span>
+                        </article>
+                        {% if app.user %}
+                            {% include 'AppBundle:Form:commentForm.html.twig' %}
+                        {% endif %}
+                    </section>
                 </div>
             {% endfor %}
-        </ul>
 
-    {% endif %}
-
-{% endblock %}
+        {% endif %}
+    {% endblock %}
