@@ -1,0 +1,45 @@
+{% set form =  githubUser.form %}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 notif"></div>
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="flash-notice">{{ flashMessage }}</div>
+    {% endfor %}
+</div>
+
+<div class="row">
+    <div class="col-md-4 col-xs-12 ">
+        <h4>Leave a comment</h4>
+        <form class="form-horizontal" id="form-contact"
+              action="{{ path(app.request.attributes.get('_route'),{'q': query }) }}"
+              method="post">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            <div class="form-group">
+                {{ form_widget(form.githubUser.id,{ 'attr': {'value': githubUser.id } }) }}
+                {{ form_widget(form.githubUser.name,{ 'attr': {'value': githubUser.name } }) }}
+                {{ form_widget(form.githubUser.bio,{ 'attr': {'value': githubUser.bio } }) }}
+                {{ form_widget(form.githubUser.html_url,{ 'attr': {'value': githubUser.html_url } }) }}
+                {{ form_widget(form.githubUser.avatar_url,{ 'attr': {'value': githubUser.avatar_url } }) }}
+                {{ form_errors(form.body) }}
+                {{ form_widget(form.body, { attr: { 'class': 'form-control', 'rows': 3 } }) }}
+                <br/>
+                {{ form_widget(form.save, { attr: { 'class': 'submit btn btn-primary btn-xl' } }) }}
+            </div>
+
+            {% if githubUser.comments is not empty %}
+                <h3>Comments</h3>
+                {% for comment in githubUser.comments %}
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <i>{{ comment.date|date("m/d/Y") }}</i><br/>
+                            <p>{{ comment.body }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {{ form_end(form) }}
+        </form>
+    </div>
+</div>
+
